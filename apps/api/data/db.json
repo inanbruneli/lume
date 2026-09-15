@@ -1,0 +1,75 @@
+{
+  "habits": [
+    {
+      "id": "83a48628-4498-476c-9902-53b577d1acb3",
+      "name": "Leitura",
+      "levels": [
+        {
+          "order": 1,
+          "minutes": 5
+        },
+        {
+          "order": 2,
+          "minutes": 10
+        },
+        {
+          "order": 3,
+          "minutes": 15
+        }
+      ],
+      "createdAt": "2026-09-11T01:28:52.444Z"
+    },
+    {
+      "id": "6fc75722-a0a5-4901-b1d0-96851f609658",
+      "name": "Desenho",
+      "levels": [
+        {
+          "order": 1,
+          "minutes": 5
+        },
+        {
+          "order": 2,
+          "minutes": 15
+        },
+        {
+          "order": 3,
+          "minutes": 30
+        }
+      ],
+      "createdAt": "2026-09-15T18:10:53.247Z"
+    },
+    {
+      "id": "f05ec26b-8802-48d2-a263-90bda5e10013",
+      "name": "Violao",
+      "levels": [
+        {
+          "order": 1,
+          "minutes": 5
+        },
+        {
+          "order": 2,
+          "minutes": 10
+        },
+        {
+          "order": 3,
+          "minutes": 15
+        }
+      ],
+      "createdAt": "2026-09-15T18:11:05.681Z"
+    }
+  ],
+  "entries": [
+    {
+      "habitId": "6fc75722-a0a5-4901-b1d0-96851f609658",
+      "date": "2026-09-15",
+      "level": 1,
+      "minutes": 0
+    },
+    {
+      "habitId": "f05ec26b-8802-48d2-a263-90bda5e10013",
+      "date": "2026-09-15",
+      "level": 3,
+      "minutes": 23
+    }
+  ]
+}
