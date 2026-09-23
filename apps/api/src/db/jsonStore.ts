@@ -1,12 +1,7 @@
 import { readFile, writeFile, rename, mkdir } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import type { Habit, HabitEntry } from '@lume/shared'
-
-export interface UserData {
-  habits: Habit[]
-  entries: HabitEntry[]
-}
+import { normalizeUserData, type UserData, type UserDataStore } from './userDataStore.js'
 
 type DbShape = Record<string, UserData>
 
@@ -18,17 +13,12 @@ interface StoredDb {
 const here = dirname(fileURLToPath(import.meta.url))
 const DB_PATH = resolve(here, '../../data/db.json')
 
-let writeQueue: Promise<unknown> = Promise.resolve()
-
-function normalizeUserData(value: Partial<UserData> | undefined): UserData {
-  return {
-    habits: value?.habits ?? [],
-    entries: value?.entries ?? []
-  }
-}
-
 function isUnclaimedShape(value: Record<string, unknown>): boolean {
   return Array.isArray(value.habits) || Array.isArray(value.entries)
+}
+
+function storedData(users: DbShape, owner: string): UserData {
+  return normalizeUserData(Object.hasOwn(users, owner) ? users[owner] : undefined)
 }
 
 async function readStoredDb(): Promise<StoredDb> {
@@ -53,29 +43,30 @@ async function writeDb(db: DbShape): Promise<void> {
   await rename(tmp, DB_PATH)
 }
 
-function userBucket(users: DbShape, owner: string): UserData {
-  const bucket = normalizeUserData(Object.hasOwn(users, owner) ? users[owner] : undefined)
-  users[owner] = bucket
-  return bucket
-}
+export function createJsonStore(): UserDataStore {
+  let writeQueue: Promise<unknown> = Promise.resolve()
 
-export async function readUserData(owner: string): Promise<UserData> {
-  const stored = await readStoredDb()
-  if (stored.unclaimed) return mutateUserData(owner, (data) => data)
-  return normalizeUserData(Object.hasOwn(stored.users, owner) ? stored.users[owner] : undefined)
-}
+  const store: UserDataStore = {
+    async read(owner) {
+      const stored = await readStoredDb()
+      if (stored.unclaimed) return store.mutate(owner, (data) => data)
+      return storedData(stored.users, owner)
+    },
 
-export function mutateUserData<T>(
-  owner: string,
-  mutator: (data: UserData) => T | Promise<T>
-): Promise<T> {
-  const next = writeQueue.then(async () => {
-    const stored = await readStoredDb()
-    const users = stored.unclaimed ? { [owner]: stored.unclaimed } : stored.users
-    const result = await mutator(userBucket(users, owner))
-    await writeDb(users)
-    return result
-  })
-  writeQueue = next.catch(() => undefined)
-  return next
+    mutate(owner, mutator) {
+      const next = writeQueue.then(async () => {
+        const stored = await readStoredDb()
+        const users = stored.unclaimed ? { [owner]: stored.unclaimed } : stored.users
+        const data = storedData(users, owner)
+        users[owner] = data
+        const result = await mutator(data)
+        await writeDb(users)
+        return result
+      })
+      writeQueue = next.catch(() => undefined)
+      return next
+    }
+  }
+
+  return store
 }
