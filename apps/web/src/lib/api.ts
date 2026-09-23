@@ -1,4 +1,5 @@
 import type {
+  AuthUser,
   CreateHabitInput,
   Habit,
   HabitEntry,
@@ -26,6 +27,16 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
 }
 
 export const api = {
+  me: () => request<AuthUser>('/api/auth/me'),
+
+  signInWithGoogle: (accessToken: string) =>
+    request<AuthUser>('/api/auth/google', {
+      method: 'POST',
+      body: JSON.stringify({ accessToken })
+    }),
+
+  signOut: () => request<void>('/api/auth/logout', { method: 'POST' }),
+
   listHabits: () => request<Habit[]>('/api/habits'),
 
   createHabit: (input: CreateHabitInput) =>

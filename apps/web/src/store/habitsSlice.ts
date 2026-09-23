@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { CreateHabitInput, Habit, HabitEntry, IsoDate } from '@lume/shared'
 import { api } from '../lib/api.js'
+import { signInWithGoogle, signOut } from './authSlice.js'
 
 interface HabitsState {
   habits: Habit[]
@@ -80,6 +81,8 @@ const habitsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(signInWithGoogle.fulfilled, () => initialState)
+      .addCase(signOut.fulfilled, () => initialState)
       .addCase(loadData.pending, (state) => {
         state.status = 'loading'
       })

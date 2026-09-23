@@ -7,7 +7,7 @@ import type {
   IsoDate,
   UpdateHabitResult
 } from '@lume/shared'
-import { mutateDb, readDb } from '../db/jsonStore.js'
+import { mutateUserData, readUserData } from '../db/jsonStore.js'
 import type { HabitRepository } from './HabitRepository.js'
 
 function inRange(date: IsoDate, range?: DateRange): boolean {
@@ -16,18 +16,20 @@ function inRange(date: IsoDate, range?: DateRange): boolean {
 }
 
 export class JsonHabitRepository implements HabitRepository {
+  constructor(private readonly owner: string) {}
+
   async listHabits(): Promise<Habit[]> {
-    const db = await readDb()
+    const db = await readUserData(this.owner)
     return db.habits
   }
 
   async findHabit(id: string): Promise<Habit | null> {
-    const db = await readDb()
+    const db = await readUserData(this.owner)
     return db.habits.find((habit) => habit.id === id) ?? null
   }
 
   async createHabit(input: CreateHabitInput): Promise<Habit> {
-    return mutateDb((db) => {
+    return mutateUserData(this.owner, (db) => {
       const habit: Habit = {
         id: randomUUID(),
         name: input.name,
@@ -47,7 +49,7 @@ export class JsonHabitRepository implements HabitRepository {
     input: CreateHabitInput,
     resolveLevel: (entry: HabitEntry, updated: Habit) => number
   ): Promise<UpdateHabitResult | null> {
-    return mutateDb((db) => {
+    return mutateUserData(this.owner, (db) => {
       const habit = db.habits.find((item) => item.id === id)
       if (!habit) return null
 
@@ -67,7 +69,7 @@ export class JsonHabitRepository implements HabitRepository {
   }
 
   async deleteHabit(id: string): Promise<boolean> {
-    return mutateDb((db) => {
+    return mutateUserData(this.owner, (db) => {
       const index = db.habits.findIndex((habit) => habit.id === id)
       if (index === -1) return false
       db.habits.splice(index, 1)
@@ -77,7 +79,7 @@ export class JsonHabitRepository implements HabitRepository {
   }
 
   async listEntries(habitId?: string, range?: DateRange): Promise<HabitEntry[]> {
-    const db = await readDb()
+    const db = await readUserData(this.owner)
     return db.entries.filter(
       (entry) =>
         (habitId === undefined || entry.habitId === habitId) && inRange(entry.date, range)
@@ -90,7 +92,7 @@ export class JsonHabitRepository implements HabitRepository {
     level: number,
     minutes?: number
   ): Promise<HabitEntry> {
-    return mutateDb((db) => {
+    return mutateUserData(this.owner, (db) => {
       const existing = db.entries.find(
         (entry) => entry.habitId === habitId && entry.date === date
       )
@@ -113,7 +115,7 @@ export class JsonHabitRepository implements HabitRepository {
     minutes: number,
     resolveLevel: (totalMinutes: number) => number
   ): Promise<HabitEntry> {
-    return mutateDb((db) => {
+    return mutateUserData(this.owner, (db) => {
       const existing = db.entries.find(
         (entry) => entry.habitId === habitId && entry.date === date
       )
@@ -137,7 +139,7 @@ export class JsonHabitRepository implements HabitRepository {
   }
 
   async clearEntry(habitId: string, date: IsoDate): Promise<boolean> {
-    return mutateDb((db) => {
+    return mutateUserData(this.owner, (db) => {
       const index = db.entries.findIndex(
         (entry) => entry.habitId === habitId && entry.date === date
       )

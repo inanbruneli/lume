@@ -15,6 +15,14 @@ export type ErrorCode =
   | 'MINUTES_INVALID'
   | 'HABIT_NOT_FOUND'
   | 'ENTRY_NOT_FOUND'
+  | 'UNAUTHORIZED'
+  | 'GOOGLE_AUTH_FAILED'
+
+export interface AuthUser {
+  email: string
+  name?: string
+  picture?: string
+}
 
 export interface HabitLevel {
   order: number

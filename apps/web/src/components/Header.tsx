@@ -2,6 +2,7 @@ import { Flame } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { useTranslation } from '@/i18n'
 import { LanguageToggle } from './LanguageToggle'
+import { UserMenu } from './UserMenu'
 
 interface HeaderProps {
   children?: ReactNode
@@ -26,6 +27,7 @@ export function Header({ children }: HeaderProps) {
         <div className="ml-auto flex items-center gap-4">
           {children}
           <LanguageToggle />
+          <UserMenu />
         </div>
       </div>
     </header>

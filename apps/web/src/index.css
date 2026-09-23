@@ -106,3 +106,35 @@
   background-clip: text;
   color: transparent;
 }
+@utility login-aurora {
+  background-image:
+    radial-gradient(40rem 26rem at 88% 8%, color-mix(in oklab, #f0a6d8 55%, transparent), transparent 70%),
+    radial-gradient(34rem 30rem at 6% 96%, color-mix(in oklab, var(--color-brand-deep) 80%, transparent), transparent 70%),
+    repeating-linear-gradient(
+      124deg,
+      transparent 0 5%,
+      color-mix(in oklab, #e9e3ff 70%, transparent) 8%,
+      transparent 11%,
+      color-mix(in oklab, var(--color-brand) 85%, transparent) 15%,
+      color-mix(in oklab, #d9669a 60%, transparent) 19%,
+      transparent 23% 27%
+    ),
+    linear-gradient(160deg, #3a2d66, #1a1336 60%, #0f0c1f);
+  background-size: 100% 100%, 100% 100%, 180% 180%, 100% 100%;
+  filter: blur(18px) saturate(1.15);
+  transform: scale(1.15);
+  animation: aurora-drift 24s ease-in-out infinite alternate;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes aurora-drift {
+  from {
+    background-position: 0 0, 0 0, 0% 0%, 0 0;
+  }
+  to {
+    background-position: 0 0, 0 0, 60% 40%, 0 0;
+  }
+}

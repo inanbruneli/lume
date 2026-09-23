@@ -50,7 +50,7 @@ export function App() {
           )}
         </Header>
 
-        {status === 'loading' ? (
+        {status === 'idle' || status === 'loading' ? (
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span className="size-1.5 animate-pulse rounded-full bg-primary" />
             {t('loading')}

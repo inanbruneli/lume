@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
-import { App } from './App'
+import { Root } from './Root'
 import { store } from './store'
 import './index.css'
 import { TooltipProvider } from './components/ui/tooltip'
@@ -15,7 +15,7 @@ createRoot(container).render(
     <I18nProvider>
       <TooltipProvider>
         <Provider store={store}>
-          <App />
+          <Root />
         </Provider>
       </TooltipProvider>
     </I18nProvider>

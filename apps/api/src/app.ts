@@ -1,8 +1,11 @@
 import express, { type ErrorRequestHandler } from 'express'
+import type { AuthConfig } from './config.js'
+import { requireAuth } from './auth/requireAuth.js'
+import { authRouter } from './routes/auth.js'
 import { habitsRouter } from './routes/habits.js'
 import { NotFoundError, ValidationError } from './services/habitService.js'
 
-export function createApp() {
+export function createApp(config: AuthConfig) {
   const app = express()
 
   app.use(express.json())
@@ -11,7 +14,8 @@ export function createApp() {
     res.json({ status: 'ok' })
   })
 
-  app.use('/api', habitsRouter)
+  app.use('/api', authRouter(config))
+  app.use('/api', requireAuth(config), habitsRouter)
 
   const onError: ErrorRequestHandler = (err, _req, res, _next) => {
     if (err instanceof ValidationError) {

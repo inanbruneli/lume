@@ -8,6 +8,17 @@ const en = {
   welcomeBack: 'Welcome back',
   language: 'Language',
 
+  loginTitle: 'Welcome',
+  loginSubtitle: 'Sign in to keep documenting every habit, one day at a time.',
+  continueWithGoogle: 'Continue with Google',
+  signingIn: 'Signing in...',
+  signOut: 'Sign out',
+  signedInAs: 'Signed in as {email}',
+  errorGoogleSignIn: 'Could not sign in with Google',
+  loginFootnote: 'No password to remember. Your Google account is all it takes.',
+  showcaseTitle: 'Every minute, made visible',
+  showcaseBody: 'Time each session and watch the year fill in with color.',
+
   loading: 'Loading...',
   loadErrorTitle: 'Could not load your habits',
   loadErrorFallback: 'Failed to reach the API.',
@@ -89,7 +100,10 @@ const en = {
   INVALID_LEVEL: 'Invalid level for this habit',
   MINUTES_INVALID: 'Minutes must be a non-negative number',
   HABIT_NOT_FOUND: 'Habit not found',
-  ENTRY_NOT_FOUND: 'Entry not found'
+  ENTRY_NOT_FOUND: 'Entry not found',
+  UNAUTHORIZED: 'Your session has expired. Sign in again.',
+  GOOGLE_AUTH_FAILED: 'Google could not confirm your account',
+  GOOGLE_UNAVAILABLE: 'Google sign-in is unavailable right now'
 }
 
 export type TranslationKey = keyof typeof en
@@ -99,6 +113,17 @@ const pt: Record<TranslationKey, string> = {
   tagline: 'habitos em dia',
   welcomeBack: 'Bem vindo de volta',
   language: 'Idioma',
+
+  loginTitle: 'Bem vindo',
+  loginSubtitle: 'Entre para continuar documentando cada habito, um dia de cada vez.',
+  continueWithGoogle: 'Continuar com Google',
+  signingIn: 'Entrando...',
+  signOut: 'Sair',
+  signedInAs: 'Conectado como {email}',
+  errorGoogleSignIn: 'Nao foi possivel entrar com o Google',
+  loginFootnote: 'Nenhuma senha para lembrar. Sua conta Google basta.',
+  showcaseTitle: 'Cada minuto, a vista',
+  showcaseBody: 'Cronometre cada sessao e veja o ano se encher de cor.',
 
   loading: 'Carregando...',
   loadErrorTitle: 'Nao foi possivel carregar os habitos',
@@ -181,7 +206,10 @@ const pt: Record<TranslationKey, string> = {
   INVALID_LEVEL: 'Nivel invalido para este habito',
   MINUTES_INVALID: 'Os minutos devem ser um numero nao negativo',
   HABIT_NOT_FOUND: 'Habito nao encontrado',
-  ENTRY_NOT_FOUND: 'Registro nao encontrado'
+  ENTRY_NOT_FOUND: 'Registro nao encontrado',
+  UNAUTHORIZED: 'Sua sessao expirou. Entre de novo.',
+  GOOGLE_AUTH_FAILED: 'O Google nao confirmou sua conta',
+  GOOGLE_UNAVAILABLE: 'O login com Google esta indisponivel agora'
 }
 
 export const translations: Record<Language, Record<TranslationKey, string>> = { en, pt }
