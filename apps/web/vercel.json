@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://render-service-url.invalid/api/:path*"
+      "destination": "https://lume-cyy2.onrender.com/api/:path*"
     }
   ]
 }
